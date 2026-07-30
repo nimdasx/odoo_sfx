@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top Menu -->
+    <menuitem id="menu_infra_hub_root"
+        name="Infra Hub"
+        web_icon="sfx_infra_hub,static/description/icon.png"
+        action="action_infra_hub_dashboard"
+        groups="sfx_infra_hub.group_infra_hub_admin"
+        sequence="100"/>
+
+    <!-- Dashboard -->
+    <menuitem id="menu_infra_hub_dashboard"
+        name="Dashboard"
+        parent="menu_infra_hub_root"
+        action="action_infra_hub_dashboard"
+        sequence="1"/>
+
+    <!-- Proxmox Sub Menu -->
+    <menuitem id="menu_proxmox_root"
+        name="Proxmox"
+        parent="menu_infra_hub_root"
+        sequence="10"/>
+
+    <menuitem id="menu_proxmox_servers"
+        name="Servers"
+        parent="menu_proxmox_root"
+        action="action_proxmox_server"
+        sequence="10"/>
+
+    <menuitem id="menu_proxmox_vms"
+        name="Virtual Machines"
+        parent="menu_proxmox_root"
+        action="action_proxmox_vm"
+        sequence="20"/>
+
+</odoo>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_proxmox_vm_list" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.list</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="vmid"/>
+                <field name="name"/>
+                <field name="node"/>
+                <field name="server_id"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'running'"
+                    decoration-danger="status == 'stopped'"
+                    decoration-warning="status == 'paused'"
+                    decoration-info="status == 'suspended'"/>
+                <field name="cpu_cores"/>
+                <field name="memory_mb"/>
+                <field name="scsihw"/>
+                <field name="qemu_agent" widget="boolean"/>
+                <field name="os_type"/>
+                <field name="tags"/>
+                <field name="last_sync"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_proxmox_vm_form" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.form</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <h3>VMID: <field name="vmid" readonly="1" class="oe_inline"/></h3>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="server_id"/>
+                            <field name="node"/>
+                            <field name="status" widget="badge"
+                                decoration-success="status == 'running'"
+                                decoration-danger="status == 'stopped'"/>
+                            <field name="os_type"/>
+                            <field name="tags"/>
+                            <field name="last_sync"/>
+                        </group>
+                        <group string="Hardware">
+                            <field name="cpu_cores"/>
+                            <field name="cpu_sockets"/>
+                            <field name="cpu_type"/>
+                            <field name="memory_mb"/>
+                            <field name="scsihw"/>
+                            <field name="machine_type"/>
+                            <field name="bios"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Agent &amp; Boot">
+                            <field name="qemu_agent"/>
+                            <field name="boot_order"/>
+                        </group>
+                        <group string="Network">
+                            <field name="net0"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Network Interfaces">
+                            <field name="nic_ids" readonly="1">
+                                <list create="false" delete="false">
+                                    <field name="name"/>
+                                    <field name="mac_address"/>
+                                    <field name="ip_addresses"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Disks">
+                            <field name="disk_info" readonly="1"/>
+                        </page>
+                        <page string="Description">
+                            <field name="description" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_proxmox_vm_kanban" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.kanban</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <kanban create="false" group_create="false">
+                <field name="name"/>
+                <field name="vmid"/>
+                <field name="node"/>
+                <field name="status"/>
+                <field name="cpu_cores"/>
+                <field name="memory_mb"/>
+                <field name="scsihw"/>
+                <field name="qemu_agent"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="fw-bold fs-5">
+                            <field name="vmid"/> - <field name="name"/>
+                        </div>
+                        <div class="text-muted small">
+                            Node: <field name="node"/>
+                        </div>
+                        <div class="mt-1">
+                            <span t-if="record.status.raw_value == 'running'" class="badge text-bg-success">Running</span>
+                            <span t-elif="record.status.raw_value == 'stopped'" class="badge text-bg-danger">Stopped</span>
+                            <span t-elif="record.status.raw_value == 'paused'" class="badge text-bg-warning">Paused</span>
+                            <span t-else="" class="badge text-bg-secondary"><field name="status"/></span>
+                        </div>
+                        <div class="mt-1 small">
+                            <span><i class="fa fa-microchip" title="CPU Cores"/> <field name="cpu_cores"/> cores</span>
+                            <span class="ms-2"><i class="fa fa-memory" title="Memory"/> <field name="memory_mb"/> MB</span>
+                        </div>
+                        <div class="mt-1 small">
+                            <span>SCSI: <field name="scsihw"/></span>
+                        </div>
+                        <div class="mt-1 small">
+                            <span t-if="record.qemu_agent.raw_value" class="text-success"><i class="fa fa-check-circle"/> Agent ON</span>
+                            <span t-else="" class="text-danger"><i class="fa fa-times-circle"/> Agent OFF</span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_proxmox_vm_pivot" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.pivot</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="server_id" type="row"/>
+                <field name="node" type="row"/>
+                <field name="status" type="col"/>
+                <field name="vmid" type="measure"/>
+                <field name="cpu_cores" type="measure"/>
+                <field name="memory_mb" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_proxmox_vm_graph" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.graph</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="node" type="row"/>
+                <field name="cpu_cores" type="measure"/>
+                <field name="memory_mb" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_proxmox_vm_search" model="ir.ui.view">
+        <field name="name">z.proxmox.vm.search</field>
+        <field name="model">z.proxmox.vm</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="vmid"/>
+                <field name="node"/>
+                <field name="scsihw"/>
+                <filter name="filter_running" string="Running"
+                    domain="[('status', '=', 'running')]"/>
+                <filter name="filter_stopped" string="Stopped"
+                    domain="[('status', '=', 'stopped')]"/>
+                <filter name="filter_agent_on" string="Agent Enabled"
+                    domain="[('qemu_agent', '=', True)]"/>
+                <filter name="filter_agent_off" string="Agent Disabled"
+                    domain="[('qemu_agent', '=', False)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived"
+                    domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_server" string="Server"
+                        context="{'group_by': 'server_id'}"/>
+                    <filter name="group_node" string="Node"
+                        context="{'group_by': 'node'}"/>
+                    <filter name="group_status" string="Status"
+                        context="{'group_by': 'status'}"/>
+                    <filter name="group_scsihw" string="SCSI Controller"
+                        context="{'group_by': 'scsihw'}"/>
+                    <filter name="group_agent" string="QEMU Agent"
+                        context="{'group_by': 'qemu_agent'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_proxmox_vm" model="ir.actions.act_window">
+        <field name="name">Virtual Machines</field>
+        <field name="res_model">z.proxmox.vm</field>
+        <field name="view_mode">list,kanban,pivot,graph,form</field>
+        <field name="search_view_id" ref="view_proxmox_vm_search"/>
+    </record>
+
+</odoo>

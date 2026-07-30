@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sfx_infra_hub.Dashboard">
+        <div class="o_action p-3">
+            <div class="mb-4">
+                <h1 class="fs-2 fw-bold">Infra Hub Dashboard</h1>
+            </div>
+
+            <!-- Proxmox Section -->
+            <h3 class="fs-4 fw-semibold mb-3">Proxmox</h3>
+
+            <!-- Server Cards -->
+            <h5 class="text-muted mb-2">Servers</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'all')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.servers.total"/>
+                            <div class="text-muted">Total Servers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'connected')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.servers.connected"/>
+                            <div class="text-muted">Connected</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'error')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.servers.error"/>
+                            <div class="text-muted">Error</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VM Cards -->
+            <h5 class="text-muted mb-2">Virtual Machines</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'all')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.vms.total"/>
+                            <div class="text-muted">Total VMs</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'running')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.vms.running"/>
+                            <div class="text-muted">Running</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'stopped')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-warning" t-out="state.data.vms.stopped"/>
+                            <div class="text-muted">Stopped</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'archived')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-secondary" t-out="state.data.vms.archived"/>
+                            <div class="text-muted">Archived</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Cards -->
+            <h5 class="text-muted mb-2">QEMU Guest Agent</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'agent_on')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.agent.enabled"/>
+                            <div class="text-muted">Agent Enabled</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'agent_off')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.agent.disabled"/>
+                            <div class="text-muted">Agent Disabled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

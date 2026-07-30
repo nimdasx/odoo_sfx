@@ -1,0 +1,52 @@
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+
+# Packaging
+**/*.egg-info/
+**/dist/
+**/build/
+
+# Logs & temporary
+**/*.log
+**/*.tmp
+**/*.bak
+**/*.swp
+
+# Translations
+**/*.pot
+**/*.mo
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+.env
+.env/
+.venv/
+env/
+venv/
+
+# JS/CSS build
+**/node_modules/
+**/*.map
+
+# Coverage/test tools
+.coverage
+.tox/
+.nox/
+htmlcov/
+.mypy_cache/
+.pyright/
+
+# Test folder
+**/tests/__pycache__/
+**/tests/*.log

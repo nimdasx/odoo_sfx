@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Module Category -->
+    <record id="module_category_infra_hub" model="ir.module.category">
+        <field name="name">Infra Hub</field>
+        <field name="sequence">200</field>
+    </record>
+
+    <!-- Administrator Group -->
+    <record id="group_infra_hub_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="module_category_infra_hub"/>
+    </record>
+
+</odoo>

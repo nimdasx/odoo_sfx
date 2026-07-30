@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_proxmox_server_list" model="ir.ui.view">
+        <field name="name">z.proxmox.server.list</field>
+        <field name="model">z.proxmox.server</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="host"/>
+                <field name="port"/>
+                <field name="server_type"/>
+                <field name="auth_type"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'connected'"
+                    decoration-warning="state == 'draft'"
+                    decoration-danger="state == 'error'"/>
+                <field name="cluster_name"/>
+                <field name="node_count"/>
+                <field name="last_check"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_proxmox_server_form" model="ir.ui.view">
+        <field name="name">z.proxmox.server.form</field>
+        <field name="model">z.proxmox.server</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_test_connection" type="object"
+                        string="Test Connection" class="oe_highlight"
+                        invisible="state == 'connected'"/>
+                    <button name="action_test_connection" type="object"
+                        string="Re-check Connection"
+                        invisible="state != 'connected'"/>
+                    <button name="action_sync_vms" type="object"
+                        string="Sync VMs" class="oe_highlight"
+                        invisible="state != 'connected'"/>
+                    <button name="action_reset_draft" type="object"
+                        string="Reset" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,connected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vms" type="object"
+                            class="oe_stat_button" icon="fa-desktop"
+                            invisible="vm_count == 0">
+                            <field name="vm_count" widget="statinfo" string="VMs"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Server Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Connection">
+                            <field name="host"/>
+                            <field name="port"/>
+                            <field name="server_type"/>
+                            <field name="verify_ssl"/>
+                        </group>
+                        <group string="Authentication">
+                            <field name="auth_type"/>
+                            <field name="username" invisible="auth_type != 'password'"/>
+                            <field name="password" password="True"
+                                invisible="auth_type != 'password'"/>
+                            <field name="token_id" invisible="auth_type != 'api_token'"/>
+                            <field name="token_secret" password="True"
+                                invisible="auth_type != 'api_token'"/>
+                        </group>
+                    </group>
+                    <group string="Cluster Info" invisible="server_type != 'cluster'">
+                        <field name="cluster_name"/>
+                        <field name="node_count"/>
+                    </group>
+                    <group string="Status">
+                        <field name="last_check"/>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_proxmox_server_search" model="ir.ui.view">
+        <field name="name">z.proxmox.server.search</field>
+        <field name="model">z.proxmox.server</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="host"/>
+                <filter name="filter_connected" string="Connected"
+                    domain="[('state', '=', 'connected')]"/>
+                <filter name="filter_cluster" string="Cluster"
+                    domain="[('server_type', '=', 'cluster')]"/>
+                <filter name="filter_standalone" string="Standalone"
+                    domain="[('server_type', '=', 'standalone')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_type" string="Type"
+                        context="{'group_by': 'server_type'}"/>
+                    <filter name="group_state" string="Status"
+                        context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_proxmox_server" model="ir.actions.act_window">
+        <field name="name">Proxmox Servers</field>
+        <field name="res_model">z.proxmox.server</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_proxmox_server_search"/>
+    </record>
+
+</odoo>
