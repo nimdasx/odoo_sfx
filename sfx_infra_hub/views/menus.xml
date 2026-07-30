@@ -34,4 +34,22 @@
         action="action_proxmox_vm"
         sequence="20"/>
 
+    <!-- Nginx Proxy Manager Sub Menu -->
+    <menuitem id="menu_npm_root"
+        name="Nginx Proxy Manager"
+        parent="menu_infra_hub_root"
+        sequence="20"/>
+
+    <menuitem id="menu_npm_servers"
+        name="Servers"
+        parent="menu_npm_root"
+        action="action_npm_server"
+        sequence="10"/>
+
+    <menuitem id="menu_npm_proxy_hosts"
+        name="Proxy Hosts"
+        parent="menu_npm_root"
+        action="action_npm_proxy_host"
+        sequence="20"/>
+
 </odoo>

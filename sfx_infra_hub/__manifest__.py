@@ -8,7 +8,7 @@
         =========
         Centralized infrastructure monitoring:
         - Proxmox (cluster & standalone): servers, VMs, network interfaces
-        - Nginx Proxy Manager (planned)
+        - Nginx Proxy Manager: servers, proxy hosts
     """,
     'author': 'Sofyan Wijaya',
     'depends': ['base', 'mail'],
@@ -18,6 +18,8 @@
         'views/dashboard_action.xml',
         'views/proxmox_server_views.xml',
         'views/proxmox_vm_views.xml',
+        'views/npm_server_views.xml',
+        'views/npm_proxy_host_views.xml',
         'views/menus.xml',
     ],
     'assets': {

@@ -9,29 +9,29 @@
             <!-- Proxmox Section -->
             <h3 class="fs-4 fw-semibold mb-3">Proxmox</h3>
 
-            <!-- Server Cards -->
+            <!-- Proxmox Server Cards -->
             <h5 class="text-muted mb-2">Servers</h5>
             <div class="row g-3 mb-4">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'all')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'server', 'all')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-primary" t-out="state.data.servers.total"/>
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.proxmox.servers.total"/>
                             <div class="text-muted">Total Servers</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'connected')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'server', 'connected')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-success" t-out="state.data.servers.connected"/>
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.proxmox.servers.connected"/>
                             <div class="text-muted">Connected</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('server', 'error')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'server', 'error')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-danger" t-out="state.data.servers.error"/>
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.proxmox.servers.error"/>
                             <div class="text-muted">Error</div>
                         </div>
                     </div>
@@ -42,33 +42,33 @@
             <h5 class="text-muted mb-2">Virtual Machines</h5>
             <div class="row g-3 mb-4">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'all')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'all')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-primary" t-out="state.data.vms.total"/>
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.proxmox.vms.total"/>
                             <div class="text-muted">Total VMs</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'running')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'running')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-success" t-out="state.data.vms.running"/>
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.proxmox.vms.running"/>
                             <div class="text-muted">Running</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'stopped')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'stopped')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-warning" t-out="state.data.vms.stopped"/>
+                            <div class="fs-1 fw-bold text-warning" t-out="state.data.proxmox.vms.stopped"/>
                             <div class="text-muted">Stopped</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'archived')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'archived')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-secondary" t-out="state.data.vms.archived"/>
+                            <div class="fs-1 fw-bold text-secondary" t-out="state.data.proxmox.vms.archived"/>
                             <div class="text-muted">Archived</div>
                         </div>
                     </div>
@@ -79,18 +79,109 @@
             <h5 class="text-muted mb-2">QEMU Guest Agent</h5>
             <div class="row g-3 mb-4">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'agent_on')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'agent_on')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-success" t-out="state.data.agent.enabled"/>
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.proxmox.agent.enabled"/>
                             <div class="text-muted">Agent Enabled</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('vm', 'agent_off')">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('proxmox', 'vm', 'agent_off')">
                         <div class="card-body text-center">
-                            <div class="fs-1 fw-bold text-danger" t-out="state.data.agent.disabled"/>
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.proxmox.agent.disabled"/>
                             <div class="text-muted">Agent Disabled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NPM Section -->
+            <hr class="my-4"/>
+            <h3 class="fs-4 fw-semibold mb-3">Nginx Proxy Manager</h3>
+
+            <!-- NPM Server Cards -->
+            <h5 class="text-muted mb-2">Servers</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'server', 'all')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.npm.servers.total"/>
+                            <div class="text-muted">Total Servers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'server', 'connected')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.npm.servers.connected"/>
+                            <div class="text-muted">Connected</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'server', 'error')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.npm.servers.error"/>
+                            <div class="text-muted">Error</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proxy Host Cards -->
+            <h5 class="text-muted mb-2">Proxy Hosts</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'all')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-primary" t-out="state.data.npm.hosts.total"/>
+                            <div class="text-muted">Total Hosts</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'enabled')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.npm.hosts.enabled"/>
+                            <div class="text-muted">Enabled</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'disabled')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-warning" t-out="state.data.npm.hosts.disabled"/>
+                            <div class="text-muted">Disabled</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'archived')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-secondary" t-out="state.data.npm.hosts.archived"/>
+                            <div class="text-muted">Archived</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SSL Cards -->
+            <h5 class="text-muted mb-2">SSL Status</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'ssl')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-success" t-out="state.data.npm.hosts.ssl"/>
+                            <div class="text-muted">SSL Enabled</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm cursor-pointer" t-on-click="() => this.onCardClick('npm', 'host', 'no_ssl')">
+                        <div class="card-body text-center">
+                            <div class="fs-1 fw-bold text-danger" t-out="state.data.npm.hosts.no_ssl"/>
+                            <div class="text-muted">No SSL</div>
                         </div>
                     </div>
                 </div>

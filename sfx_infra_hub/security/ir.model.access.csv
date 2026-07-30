@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_z_proxmox_server_admin,z.proxmox.server.admin,model_z_proxmox_server,sfx_infra_hub.group_infra_hub_admin,1,1,1,1
 access_z_proxmox_vm_admin,z.proxmox.vm.admin,model_z_proxmox_vm,sfx_infra_hub.group_infra_hub_admin,1,1,1,1
 access_z_proxmox_vm_nic_admin,z.proxmox.vm.nic.admin,model_z_proxmox_vm_nic,sfx_infra_hub.group_infra_hub_admin,1,1,1,1
+access_z_npm_server_admin,z.npm.server.admin,model_z_npm_server,sfx_infra_hub.group_infra_hub_admin,1,1,1,1
+access_z_npm_proxy_host_admin,z.npm.proxy.host.admin,model_z_npm_proxy_host,sfx_infra_hub.group_infra_hub_admin,1,1,1,1

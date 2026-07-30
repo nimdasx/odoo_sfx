@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_npm_proxy_host_list" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.list</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="domain_names"/>
+                <field name="forward_scheme"/>
+                <field name="forward_host"/>
+                <field name="forward_port"/>
+                <field name="ssl_enabled" widget="boolean"/>
+                <field name="ssl_forced" widget="boolean"/>
+                <field name="block_exploits" widget="boolean"/>
+                <field name="websocket_support" widget="boolean"/>
+                <field name="enabled" widget="boolean"/>
+                <field name="server_id"/>
+                <field name="last_sync"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_npm_proxy_host_form" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.form</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="domain_names" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="server_id"/>
+                            <field name="npm_id"/>
+                            <field name="enabled"/>
+                            <field name="last_sync"/>
+                        </group>
+                        <group string="Forward">
+                            <field name="forward_scheme"/>
+                            <field name="forward_host"/>
+                            <field name="forward_port"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="SSL">
+                            <field name="ssl_enabled"/>
+                            <field name="ssl_forced"/>
+                            <field name="ssl_provider"/>
+                            <field name="http2_support"/>
+                            <field name="hsts_enabled"/>
+                            <field name="hsts_subdomains"/>
+                            <field name="meta_dns_challenge"/>
+                        </group>
+                        <group string="Security &amp; Performance">
+                            <field name="block_exploits"/>
+                            <field name="caching_enabled"/>
+                            <field name="websocket_support"/>
+                            <field name="access_list_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Advanced Config">
+                            <field name="advanced_config" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_npm_proxy_host_search" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.search</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="domain_names"/>
+                <field name="forward_host"/>
+                <filter name="filter_enabled" string="Enabled"
+                    domain="[('enabled', '=', True)]"/>
+                <filter name="filter_disabled" string="Disabled"
+                    domain="[('enabled', '=', False)]"/>
+                <filter name="filter_ssl" string="SSL Enabled"
+                    domain="[('ssl_enabled', '=', True)]"/>
+                <filter name="filter_no_ssl" string="No SSL"
+                    domain="[('ssl_enabled', '=', False)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived"
+                    domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_server" string="Server"
+                        context="{'group_by': 'server_id'}"/>
+                    <filter name="group_scheme" string="Forward Scheme"
+                        context="{'group_by': 'forward_scheme'}"/>
+                    <filter name="group_ssl" string="SSL Enabled"
+                        context="{'group_by': 'ssl_enabled'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_npm_proxy_host" model="ir.actions.act_window">
+        <field name="name">Proxy Hosts</field>
+        <field name="res_model">z.npm.proxy.host</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_npm_proxy_host_search"/>
+    </record>
+
+</odoo>
