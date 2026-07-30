@@ -53,6 +53,7 @@ class ProxmoxVm(models.Model):
     net0 = fields.Char(string='Network (net0)')
     disk_info = fields.Text(string='Disk Info')
     nic_ids = fields.One2many('z.proxmox.vm.nic', 'vm_id', string='Network Interfaces')
+    proxy_host_ids = fields.One2many('z.npm.proxy.host', 'linked_vm_id', string='Proxy Hosts')
     tags = fields.Char(string='Tags')
     description = fields.Text(string='Description')
     last_sync = fields.Datetime(string='Last Sync', readonly=True)

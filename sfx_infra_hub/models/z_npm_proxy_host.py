@@ -1,4 +1,5 @@
-from odoo import models, fields
+import re
+from odoo import models, fields, api
 
 
 class NpmProxyHost(models.Model):
@@ -13,6 +14,10 @@ class NpmProxyHost(models.Model):
     domain_names = fields.Text(string='Domain Names')
     forward_host = fields.Char(string='Forward Host')
     forward_port = fields.Integer(string='Forward Port')
+    linked_vm_id = fields.Many2one(
+        'z.proxmox.vm', string='Linked VM',
+        compute='_compute_linked_vm', store=True,
+    )
     forward_scheme = fields.Selection([
         ('http', 'HTTP'),
         ('https', 'HTTPS'),
@@ -35,6 +40,27 @@ class NpmProxyHost(models.Model):
     _sql_constraints = [
         ('unique_host_per_server', 'unique(server_id, npm_id)', 'Proxy host must be unique per NPM server.')
     ]
+
+    @api.depends('forward_host')
+    def _compute_linked_vm(self):
+        NicModel = self.env['z.proxmox.vm.nic']
+        for rec in self:
+            rec.linked_vm_id = False
+            if not rec.forward_host:
+                continue
+            ip = rec.forward_host.strip()
+            # Search NICs where ip_addresses contains this IP
+            nics = NicModel.search([('ip_addresses', 'ilike', ip)])
+            for nic in nics:
+                # Verify exact IP match (not substring)
+                for line in (nic.ip_addresses or '').split('\n'):
+                    # format: "192.168.0.10/24 (ipv4)"
+                    match = re.match(r'^([\d\.]+)/', line.strip())
+                    if match and match.group(1) == ip:
+                        rec.linked_vm_id = nic.vm_id.id
+                        break
+                if rec.linked_vm_id:
+                    break
 
     def name_get(self):
         result = []

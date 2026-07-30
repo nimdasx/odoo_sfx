@@ -235,20 +235,32 @@ class ProxmoxServer(models.Model):
                             pve_macs = set()
                             for key, val in config.items():
                                 if key.startswith('net') and key[3:].isdigit():
-                                    # format: "virtio=AA:BB:CC:DD:EE:FF,bridge=vmbr0,..."
-                                    for part in str(val).split(','):
-                                        if '=' in part:
-                                            k, v = part.split('=', 1)
-                                            if ':' in v and len(v) == 17:
-                                                pve_macs.add(v.lower())
+                                    # Formats:
+                                    # "virtio=AA:BB:CC:DD:EE:FF,bridge=vmbr0,..."
+                                    # "e1000=AA:BB:CC:DD:EE:FF,bridge=vmbr0,..."
+                                    # Find all MAC-like patterns in the value
+                                    import re
+                                    macs_found = re.findall(
+                                        r'([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})',
+                                        str(val)
+                                    )
+                                    for m in macs_found:
+                                        pve_macs.add(m.lower())
 
                             net_url = f"{rec._get_base_url()}/nodes/{node_name}/qemu/{vmid}/agent/network-get-interfaces"
+                            import logging
+                            _logger = logging.getLogger(__name__)
                             try:
                                 net_resp = requests.get(net_url, headers=headers, verify=rec.verify_ssl, timeout=10)
                                 if net_resp.status_code == 200:
                                     net_data = net_resp.json().get('data', {}).get('result', [])
                                     NicModel = self.env['z.proxmox.vm.nic']
                                     vm_rec.nic_ids.unlink()
+                                    if not net_data:
+                                        _logger.warning(
+                                            "VM %s (%s): guest agent returned empty network data. "
+                                            "pve_macs=%s", vmid, vm.get('name', ''), pve_macs
+                                        )
                                     for iface in net_data:
                                         mac = iface.get('hardware-address', '').lower()
                                         # Only include interfaces whose MAC matches Proxmox-provisioned NICs
@@ -268,8 +280,16 @@ class ProxmoxServer(models.Model):
                                             'mac_address': mac,
                                             'ip_addresses': '\n'.join(ip_list) if ip_list else '',
                                         })
-                            except Exception:
-                                pass
+                                else:
+                                    _logger.warning(
+                                        "VM %s (%s): guest agent network-get-interfaces returned HTTP %s: %s",
+                                        vmid, vm.get('name', ''), net_resp.status_code, net_resp.text[:200]
+                                    )
+                            except Exception as e:
+                                _logger.warning(
+                                    "VM %s (%s): failed to fetch network info: %s",
+                                    vmid, vm.get('name', ''), str(e)
+                                )
 
                 archived = VmModel.search([
                     ('server_id', '=', rec.id),

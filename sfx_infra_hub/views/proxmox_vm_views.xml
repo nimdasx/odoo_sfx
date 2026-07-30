@@ -80,6 +80,18 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Proxy Hosts">
+                            <field name="proxy_host_ids" readonly="1">
+                                <list create="false" delete="false">
+                                    <field name="domain_names"/>
+                                    <field name="forward_scheme"/>
+                                    <field name="forward_port"/>
+                                    <field name="ssl_enabled"/>
+                                    <field name="enabled"/>
+                                    <field name="server_id"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Disks">
                             <field name="disk_info" readonly="1"/>
                         </page>

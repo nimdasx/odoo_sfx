@@ -16,6 +16,7 @@
                 <field name="block_exploits" widget="boolean"/>
                 <field name="websocket_support" widget="boolean"/>
                 <field name="enabled" widget="boolean"/>
+                <field name="linked_vm_id"/>
                 <field name="server_id"/>
                 <field name="last_sync"/>
             </list>
@@ -45,6 +46,7 @@
                             <field name="forward_scheme"/>
                             <field name="forward_host"/>
                             <field name="forward_port"/>
+                            <field name="linked_vm_id"/>
                         </group>
                     </group>
                     <group>
@@ -106,11 +108,71 @@
         </field>
     </record>
 
+    <!-- Kanban View -->
+    <record id="view_npm_proxy_host_kanban" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.kanban</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <kanban create="false" group_create="false">
+                <field name="domain_names"/>
+                <field name="forward_host"/>
+                <field name="forward_port"/>
+                <field name="forward_scheme"/>
+                <field name="ssl_enabled"/>
+                <field name="enabled"/>
+                <field name="block_exploits"/>
+                <field name="websocket_support"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="fw-bold">
+                            <field name="domain_names"/>
+                        </div>
+                        <div class="mt-1 small text-muted">
+                            <span t-out="record.forward_scheme.value"/>://<span t-out="record.forward_host.value"/>:<span t-out="record.forward_port.value"/>
+                        </div>
+                        <div class="mt-2">
+                            <span t-if="record.enabled.raw_value" class="badge text-bg-success">Enabled</span>
+                            <span t-else="" class="badge text-bg-danger">Disabled</span>
+                            <span t-if="record.ssl_enabled.raw_value" class="badge text-bg-info ms-1">SSL</span>
+                            <span t-if="record.block_exploits.raw_value" class="badge text-bg-warning ms-1">Block Exploits</span>
+                            <span t-if="record.websocket_support.raw_value" class="badge text-bg-secondary ms-1">WS</span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_npm_proxy_host_pivot" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.pivot</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="server_id" type="row"/>
+                <field name="ssl_enabled" type="col"/>
+                <field name="npm_id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_npm_proxy_host_graph" model="ir.ui.view">
+        <field name="name">z.npm.proxy.host.graph</field>
+        <field name="model">z.npm.proxy.host</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="server_id" type="row"/>
+                <field name="npm_id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
     <!-- Action -->
     <record id="action_npm_proxy_host" model="ir.actions.act_window">
         <field name="name">Proxy Hosts</field>
         <field name="res_model">z.npm.proxy.host</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,kanban,pivot,graph,form</field>
         <field name="search_view_id" ref="view_npm_proxy_host_search"/>
     </record>
 
