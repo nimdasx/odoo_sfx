@@ -58,9 +58,11 @@ class ProxmoxVm(models.Model):
     description = fields.Text(string='Description')
     last_sync = fields.Datetime(string='Last Sync', readonly=True)
 
-    _sql_constraints = [
-        ('unique_vm_per_server', 'unique(server_id, vmid, node)', 'VM must be unique per server and node.')
-    ]
+    _unique_vm_per_server = models.Constraint(
+        'unique(server_id, vmid, node)',
+        'VM must be unique per server and node.',
+    )
 
-    def name_get(self):
-        return [(rec.id, f"{rec.vmid} - {rec.name or 'Unknown'}") for rec in self]
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = f"{rec.vmid} - {rec.name or 'Unknown'}"

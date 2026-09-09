@@ -4,7 +4,7 @@ from odoo.http import request
 
 class InfraHubDashboard(http.Controller):
 
-    @http.route('/infra_hub/dashboard_data', type='json', auth='user')
+    @http.route('/infra_hub/dashboard_data', type='jsonrpc', auth='user')
     def dashboard_data(self):
         # Proxmox
         PveServer = request.env['z.proxmox.server']

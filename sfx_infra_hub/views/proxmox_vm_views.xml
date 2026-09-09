@@ -200,7 +200,7 @@
                 <separator/>
                 <filter name="filter_archived" string="Archived"
                     domain="[('active', '=', False)]"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_server" string="Server"
                         context="{'group_by': 'server_id'}"/>
                     <filter name="group_node" string="Node"

@@ -7,10 +7,16 @@
         <field name="sequence">200</field>
     </record>
 
+    <!-- Privilege (groups groups under the module category in Settings > Users & Companies > Groups) -->
+    <record id="res_groups_privilege_infra_hub" model="res.groups.privilege">
+        <field name="name">Infra Hub</field>
+        <field name="category_id" ref="module_category_infra_hub"/>
+    </record>
+
     <!-- Administrator Group -->
     <record id="group_infra_hub_admin" model="res.groups">
         <field name="name">Administrator</field>
-        <field name="category_id" ref="module_category_infra_hub"/>
+        <field name="privilege_id" ref="res_groups_privilege_infra_hub"/>
     </record>
 
 </odoo>

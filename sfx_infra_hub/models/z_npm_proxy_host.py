@@ -37,9 +37,10 @@ class NpmProxyHost(models.Model):
     meta_dns_challenge = fields.Boolean(string='DNS Challenge')
     last_sync = fields.Datetime(string='Last Sync', readonly=True)
 
-    _sql_constraints = [
-        ('unique_host_per_server', 'unique(server_id, npm_id)', 'Proxy host must be unique per NPM server.')
-    ]
+    _unique_host_per_server = models.Constraint(
+        'unique(server_id, npm_id)',
+        'Proxy host must be unique per NPM server.',
+    )
 
     @api.depends('forward_host')
     def _compute_linked_vm(self):
@@ -62,9 +63,7 @@ class NpmProxyHost(models.Model):
                 if rec.linked_vm_id:
                     break
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for rec in self:
             domains = (rec.domain_names or '').replace('\n', ', ')
-            result.append((rec.id, domains or f"Host #{rec.npm_id}"))
-        return result
+            rec.display_name = domains or f"Host #{rec.npm_id}"

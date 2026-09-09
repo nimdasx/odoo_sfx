@@ -106,7 +106,7 @@
                     domain="[('server_type', '=', 'cluster')]"/>
                 <filter name="filter_standalone" string="Standalone"
                     domain="[('server_type', '=', 'standalone')]"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_type" string="Type"
                         context="{'group_by': 'server_type'}"/>
                     <filter name="group_state" string="Status"
